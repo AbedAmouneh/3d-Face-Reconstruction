@@ -1,9 +1,11 @@
+// App.js
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { StyleSheet, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+import AddScreen from "./AddScreen";
 import SettingsScreen from "./SettingsScreen";
 import Screen from "./Screen";
 
@@ -14,17 +16,19 @@ export default function App() {
     <NavigationContainer>
       <LinearGradient colors={["#A48559", "#02131B"]} style={styles.container}>
         <Tab.Navigator
+          initialRouteName="Add"
           screenOptions={{
             tabBarStyle: [
               {
                 display: "flex",
                 backgroundColor: "black",
-                borderTopColor: "grey", 
-                borderTopWidth: 1, 
+                borderTopColor: "grey",
+                borderTopWidth: 1,
               },
               null,
             ],
             tabBarShowLabel: false,
+            tabBarActiveTintColor: "white",
           }}
         >
           <Tab.Screen
@@ -54,15 +58,19 @@ export default function App() {
           />
           <Tab.Screen
             name="Add"
-            component={Screen}
-            initialParams={{ screenName: "Add" }}
+            component={AddScreen}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Image
                   source={require("./assets/add-icon.png")}
-                  style={{ tintColor: color, width: size, height: size }}
+                  style={{
+                    tintColor: color,
+                    width: size * 1.3,
+                    height: size * 1.3,
+                  }}
                 />
               ),
+              headerShown: false,
             }}
           />
           <Tab.Screen
