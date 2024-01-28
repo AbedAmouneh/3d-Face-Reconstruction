@@ -13,14 +13,15 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      onStateChange={(state) => console.log("New state is", state)}
+    >
       <LinearGradient colors={["#A48559", "#02131B"]} style={styles.container}>
         <Tab.Navigator
           initialRouteName="Add"
           screenOptions={{
             tabBarStyle: [
               {
-                display: "flex",
                 backgroundColor: "black",
                 borderTopColor: "grey",
                 borderTopWidth: 1,
@@ -36,10 +37,10 @@ export default function App() {
             component={SettingsScreen}
             options={{
               tabBarIcon: ({ color, size }) => (
-                <Image
-                  source={require("./assets/settings-icon.png")}
-                  style={{ tintColor: color, width: size, height: size }}
-                />
+                  <Image
+                    source={require("./assets/settings-icon.png")}
+                    style={{ tintColor: color, width: size, height: size }}
+                  />
               ),
             }}
           />
