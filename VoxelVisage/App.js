@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { StyleSheet, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
+import Camera from "./src/components/Camera";
 import AddScreen from "./AddScreen";
 import SettingsScreen from "./SettingsScreen";
 import Screen from "./Screen";
@@ -87,6 +87,20 @@ export default function App() {
               ),
             }}
           />
+          // Inside the createBottomTabNavigator
+<Tab.Screen
+  name="Camera"
+  component={Camera}
+  options={{
+    tabBarIcon: ({ color, size }) => (
+      <Image
+        source={require("./assets/camera-icon.png")} // Replace with your camera icon source
+        style={{ tintColor: color, width: size, height: size }}
+      />
+    ),
+  }}
+/>
+
           <Tab.Screen
             name="Save"
             component={Screen}
