@@ -1,15 +1,23 @@
-// App.js
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet, Image, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Camera from "./src/components/Camera";
+import CameraScreen from "./src/components/Camera";
 import AddScreen from "./AddScreen";
 import SettingsScreen from "./SettingsScreen";
 import Screen from "./Screen";
 
 const Tab = createBottomTabNavigator();
+
+const CameraTabButton = ({ onPress }) => (
+  <TouchableOpacity onPress={onPress} style={styles.cameraButton}>
+    <Image
+      source={require("./assets/camera.png")}
+      style={{ tintColor: "white", width: 30, height: 30 }}
+    />
+  </TouchableOpacity>
+);
 
 export default function App() {
   return (
@@ -37,10 +45,10 @@ export default function App() {
             component={SettingsScreen}
             options={{
               tabBarIcon: ({ color, size }) => (
-                  <Image
-                    source={require("./assets/settings-icon.png")}
-                    style={{ tintColor: color, width: size, height: size }}
-                  />
+                <Image
+                  source={require("./assets/settings-icon.png")}
+                  style={{ tintColor: color, width: size, height: size }}
+                />
               ),
             }}
           />
@@ -87,20 +95,18 @@ export default function App() {
               ),
             }}
           />
-          // Inside the createBottomTabNavigator
-<Tab.Screen
-  name="Camera"
-  component={Camera}
-  options={{
-    tabBarIcon: ({ color, size }) => (
-      <Image
-        source={require("./assets/camera-icon.png")} // Replace with your camera icon source
-        style={{ tintColor: color, width: size, height: size }}
-      />
-    ),
-  }}
-/>
-
+          <Tab.Screen
+            name="Camera"
+            component={CameraScreen}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Image
+                  source={require("./assets/camera.png")}
+                  style={{ tintColor: color, width: size, height: size }}
+                />
+              ),
+            }}
+          />
           <Tab.Screen
             name="Save"
             component={Screen}
@@ -124,5 +130,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "black",
+  },
+  cameraButton: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
