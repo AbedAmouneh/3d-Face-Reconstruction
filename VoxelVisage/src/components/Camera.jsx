@@ -6,6 +6,7 @@ import * as ImagePicker from "expo-image-picker";
 const CameraScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
+  const [capturedImage, setCapturedImage] = useState(null);
   const cameraRef = useRef(null);
 
   useEffect(() => {
@@ -13,7 +14,8 @@ const CameraScreen = ({ navigation }) => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
 
-      const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const galleryStatus =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (galleryStatus.status !== "granted") {
         alert("Sorry, we need camera roll permissions to make this work!");
       }
@@ -25,8 +27,7 @@ const CameraScreen = ({ navigation }) => {
       const options = { quality: 0.5, base64: true };
       const data = await cameraRef.current.takePictureAsync(options);
 
-      // Handle the captured photo data, for example, save it or navigate to another screen.
-      console.log("Photo data:", data);
+      setCapturedImage(data);
     }
   };
 
@@ -39,9 +40,12 @@ const CameraScreen = ({ navigation }) => {
     });
 
     if (!result.cancelled) {
-      // Handle the selected image, for example, save it or use it in your app.
-      console.log("Selected image:", result);
+      setCapturedImage(result);
     }
+  };
+
+  const handleImageClick = () => {
+    setCapturedImage(null);
   };
 
   if (hasPermission === null) {

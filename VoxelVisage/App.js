@@ -25,7 +25,7 @@ export default function App() {
     >
       <LinearGradient colors={["#A48559", "#02131B"]} style={styles.container}>
         <Tab.Navigator
-          initialRouteName="Add"
+          initialRouteName="Camera"
           screenOptions={{
             tabBarStyle: [
               {
@@ -70,7 +70,7 @@ export default function App() {
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Image
-                  source={require("./assets/camera.png")}
+                  source={require("./assets/add-icon.png")}
                   style={{ tintColor: color, width: size, height: size }}
                 />
               ),
