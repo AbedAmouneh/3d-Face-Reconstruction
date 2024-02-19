@@ -4,7 +4,6 @@ import { StyleSheet, Image, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CameraScreen from "./src/components/Camera";
-import AddScreen from "./AddScreen";
 import SettingsScreen from "./SettingsScreen";
 import Screen from "./Screen";
 
@@ -66,22 +65,18 @@ export default function App() {
             }}
           />
           <Tab.Screen
-            name="Add"
-            component={AddScreen}
+            name="Camera"
+            component={CameraScreen}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Image
-                  source={require("./assets/add-icon.png")}
-                  style={{
-                    tintColor: color,
-                    width: size * 1.3,
-                    height: size * 1.3,
-                  }}
+                  source={require("./assets/camera.png")}
+                  style={{ tintColor: color, width: size, height: size }}
                 />
               ),
-              headerShown: false,
             }}
           />
+
           <Tab.Screen
             name="Download"
             component={Screen}
@@ -95,18 +90,7 @@ export default function App() {
               ),
             }}
           />
-          <Tab.Screen
-            name="Camera"
-            component={CameraScreen}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Image
-                  source={require("./assets/camera.png")}
-                  style={{ tintColor: color, width: size, height: size }}
-                />
-              ),
-            }}
-          />
+
           <Tab.Screen
             name="Save"
             component={Screen}
