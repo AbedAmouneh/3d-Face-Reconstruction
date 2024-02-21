@@ -9,6 +9,7 @@ import {
   Animated,
   Easing,
   Alert,
+  Platform,
 } from "react-native";
 import { Camera } from "expo-camera";
 import {
@@ -216,6 +217,18 @@ const CameraScreen = React.memo(() => {
     outputRange: ["0deg", "360deg"],
   });
 
+  const shadowStyle = Platform.select({
+    ios: {
+      shadowColor: "#000",
+      shadowOffset: { width: 2, height: 5 },
+      shadowOpacity: 1,
+      shadowRadius: 4,
+    },
+    android: {
+      elevation: 4,
+    },
+  });
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
@@ -245,7 +258,8 @@ const CameraScreen = React.memo(() => {
                 bottom: 16,
                 left: 16,
                 alignItems: "center",
-                zIndex: 4,
+                zIndex: 2,
+                ...shadowStyle,
               }}
               onPress={() => {
                 setType(
@@ -267,6 +281,7 @@ const CameraScreen = React.memo(() => {
                 left: "50%",
                 transform: [{ translateX: -28 }],
                 zIndex: 2,
+                ...shadowStyle,
               }}
               onPress={takePicture}
             >
@@ -303,6 +318,7 @@ const CameraScreen = React.memo(() => {
                 right: 16,
                 alignItems: "center",
                 zIndex: 2,
+                ...shadowStyle,
               }}
               onPress={pickImage}
             >
@@ -320,6 +336,7 @@ const CameraScreen = React.memo(() => {
                 marginLeft: "auto",
                 marginRight: 8,
                 marginTop: 16,
+                ...shadowStyle,
               }}
               onPress={toggleFlash}
             >
