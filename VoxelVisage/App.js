@@ -17,7 +17,6 @@ const CameraTabButton = () => {
   const navigation = useNavigation();
 
   const handleCameraButtonPress = () => {
-    // Navigate to the "Camera" screen
     navigation.navigate("Camera");
   };
 

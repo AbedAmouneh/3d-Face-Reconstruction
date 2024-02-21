@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import * as MediaLibrary from "expo-media-library";
 import {
   View,
   TouchableOpacity,
@@ -7,12 +8,13 @@ import {
   Dimensions,
   Animated,
   Easing,
+  Alert,
 } from "react-native";
 import { Camera } from "expo-camera";
 import {
   GestureHandlerRootView,
-  TapGestureHandler,
   State,
+  LongPressGestureHandler,
 } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 
@@ -105,7 +107,7 @@ const CameraScreen = React.memo(() => {
     });
 
     if (!result.cancelled) {
-      setCapturedImage(result);
+      setCapturedImage({ uri: result.uri });
     }
   };
 
@@ -115,6 +117,88 @@ const CameraScreen = React.memo(() => {
         ? Camera.Constants.FlashMode.on
         : Camera.Constants.FlashMode.off
     );
+  };
+
+  const handleLongPress = async () => {
+    let successMessageDisplayed = false;
+
+    Alert.alert(
+      "Image Options",
+      "Choose an option",
+      [
+        {
+          text: "Remove Image",
+          onPress: () => {
+            Alert.alert(
+              "Confirmation",
+              "Are you sure you want to remove this image?",
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                {
+                  text: "Remove",
+                  onPress: () => {
+                    setCapturedImage(null);
+                  },
+                },
+              ],
+              { cancelable: true }
+            );
+          },
+        },
+        {
+          text: "Download Image",
+          onPress: async () => {
+            const fileName = await promptForFileName();
+            if (fileName) {
+              try {
+                const asset = await MediaLibrary.createAssetAsync(
+                  capturedImage.uri
+                );
+
+                await MediaLibrary.createAlbumAsync(fileName, asset);
+
+                Alert.alert("Success", "Image successfully downloaded!", [
+                  {
+                    text: "Okay",
+                  },
+                ]);
+              } catch (error) {
+                console.error("Error saving image to gallery:", error);
+              }
+            }
+          },
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  const promptForFileName = async () => {
+    return new Promise((resolve) => {
+      Alert.prompt(
+        "Enter Image Name",
+        "Please provide a name for the image",
+        [
+          {
+            text: "Cancel",
+            onPress: () => resolve(null),
+            style: "cancel",
+          },
+          {
+            text: "OK",
+            onPress: (fileName) => resolve(fileName),
+          },
+        ],
+        "plain-text"
+      );
+    });
   };
 
   if (hasPermission === null) {
@@ -262,20 +346,29 @@ const CameraScreen = React.memo(() => {
               zIndex: 2,
             }}
           >
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
+            <LongPressGestureHandler
+              onHandlerStateChange={({ nativeEvent }) => {
+                if (nativeEvent.state === State.ACTIVE) {
+                  handleLongPress();
+                }
               }}
             >
-              <Image source={{ uri: capturedImage.uri }} style={imageSize} />
-              <TouchableOpacity onPress={() => setCapturedImage(null)}>
-                <Text style={{ color: "white", marginTop: 10 }}>
-                  Remove Image
-                </Text>
-              </TouchableOpacity>
-            </View>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  zIndex: 2,
+                }}
+              >
+                <Image source={{ uri: capturedImage.uri }} style={imageSize} />
+                <TouchableOpacity onPress={() => setCapturedImage(null)}>
+                  <Text style={{ color: "white", marginTop: 10 }}>
+                    Remove Image
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </LongPressGestureHandler>
           </View>
         )}
       </View>
