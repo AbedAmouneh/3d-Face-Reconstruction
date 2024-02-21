@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { NavigationContainer, useIsFocused } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  useIsFocused,
+  useNavigation,
+} from "@react-navigation/native";
 import { StyleSheet, Image, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -8,11 +12,20 @@ import SettingsScreen from "./SettingsScreen";
 
 const Tab = createBottomTabNavigator();
 
-const CameraTabButton = ({ onPress }) => {
+const CameraTabButton = () => {
   const isFocused = useIsFocused();
+  const navigation = useNavigation();
+
+  const handleCameraButtonPress = () => {
+    // Navigate to the "Camera" screen
+    navigation.navigate("Camera");
+  };
 
   return (
-    <TouchableOpacity onPress={onPress} style={styles.cameraButton}>
+    <TouchableOpacity
+      onPress={handleCameraButtonPress}
+      style={styles.cameraButton}
+    >
       <Image
         source={require("./assets/camera.png")}
         style={{
@@ -28,8 +41,6 @@ const CameraTabButton = ({ onPress }) => {
 export default function App() {
   const [capturedImage, setCapturedImage] = useState(null);
 
-  const handleCameraButtonPress = () => {};
-
   return (
     <NavigationContainer>
       <LinearGradient colors={["#A48559", "#02131B"]} style={styles.container}>
@@ -39,7 +50,7 @@ export default function App() {
             tabBarStyle: {
               backgroundColor: "black",
               borderColor: "grey",
-              borderWidth: 2, 
+              borderWidth: 2,
               borderRadius: 25,
               margin: 8,
               width: "50%",
@@ -65,14 +76,11 @@ export default function App() {
 
           <Tab.Screen
             name="Camera"
+            component={CameraScreen}
             options={{
-              tabBarIcon: ({ color, size }) => (
-                <CameraTabButton onPress={handleCameraButtonPress} />
-              ),
+              tabBarIcon: ({ color, size }) => <CameraTabButton />,
             }}
-          >
-            {() => <CameraScreen capturedImage={capturedImage} />}
-          </Tab.Screen>
+          />
         </Tab.Navigator>
       </LinearGradient>
     </NavigationContainer>

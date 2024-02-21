@@ -234,7 +234,7 @@ const CameraScreen = React.memo(() => {
                 alignItems: "center",
                 zIndex: 2,
                 marginLeft: "auto",
-                marginRight: 14,
+                marginRight: 8,
                 marginTop: 16,
               }}
               onPress={toggleFlash}
